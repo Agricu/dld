@@ -1,0 +1,28 @@
+[project]
+name = "daledou"
+version = "14.1.0"
+description = "Q宠大乐斗自动化助手"
+authors = [{ name = "雨园"}]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.3",
+    "httpx>=0.28.1",
+    "loguru>=0.7.3",
+    "pymysql>=1.2.0",
+    "pyyaml>=6.0.3",
+    "schedule>=1.2.2",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "V$version"
+version_scheme = "pep440"
+version_provider = "uv"
+update_changelog_on_bump = false
+major_version_zero = false
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.13.9",
+]

@@ -1,0 +1,12 @@
+__pycache__/
+*.py[oc]
+
+.venv
+.vscode
+
+log/
+*.log
+
+config/accounts/*.yaml
+config/dld_cookie.yaml
+.DS_Store

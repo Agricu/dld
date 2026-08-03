@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QQ大乐斗 - 登录</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 420px;
+            width: 100%;
+        }
+        .logo { font-size: 28px; font-weight: bold; color: #333; text-align: center; margin-bottom: 8px; }
+        .subtitle { color: #888; font-size: 14px; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 500; color: #555; margin-bottom: 4px; font-size: 14px; }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus { outline: none; border-color: #667eea; }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .btn:active { transform: translateY(0); }
+        .error { color: #c62828; font-size: 14px; margin-top: 8px; display: none; }
+        .error.show { display: block; }
+        .links { text-align: center; margin-top: 16px; font-size: 14px; }
+        .links a { color: #667eea; text-decoration: none; }
+        .links a:hover { text-decoration: underline; }
+        @media (max-width: 480px) { .container { padding: 30px 20px; } }
+    </style>
+</head>
+<body>
+    <!-- 安装检测 -->
+    <script>
+        fetch('../install.lock', { method: 'HEAD' })
+            .then(function(r) {
+                if (!r.ok) {
+                    window.location.href = '../install.php';
+                }
+            })
+            .catch(function() {
+                window.location.href = '../install.php';
+            });
+    </script>
+
+    <div class="container">
+        <div class="logo">🎮 QQ大乐斗</div>
+        <div class="subtitle">使用 QQ号 + 密码登录</div>
+        
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <div class="form-group">
+                <label>QQ号</label>
+                <input type="text" id="username" placeholder="请输入QQ号" required>
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" id="password" placeholder="请输入密码" required>
+            </div>
+            <div class="error" id="errorMsg"></div>
+            <button type="submit" class="btn">登 录</button>
+        </form>
+        
+        <div class="links">
+            <a href="index.html">首次使用？扫码注册</a>
+        </div>
+    </div>
+    
+    <script>
+        async function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('errorMsg');
+            
+            if (!username || !password) {
+                errorEl.textContent = '请填写完整信息';
+                errorEl.classList.add('show');
+                return false;
+            }
+            
+            try {
+                const response = await fetch('api.php?action=login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    window.location.href = '../index.php';
+                } else {
+                    errorEl.textContent = result.error || '登录失败';
+                    errorEl.classList.add('show');
+                }
+            } catch (error) {
+                errorEl.textContent = '网络错误: ' + error.message;
+                errorEl.classList.add('show');
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
