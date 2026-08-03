@@ -1,3 +1,5 @@
+## 来自：[https://github.com/gaoyuanqi/daledou](https://github.com/gaoyuanqi/daledou)
+
 ## Q宠大乐斗自动化助手
 
 一个平民鹅日常周常任务自动化脚本，支持定时调度、多账号并发
